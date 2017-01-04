@@ -1,0 +1,638 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="AngularJS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="第一个例子Hello world在Angular中创建服务一般通过以下几种方式
+
+Factory
+Service
+Provider
+Constant
+Value
+
+
+其中前三种较为常见，来看一下他们的实现方式：
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950var">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS中几种服务的比较">
+<meta property="og:url" content="http://yoursite.com/2017/01/03/AngularJS中几种服务的比较/index.html">
+<meta property="og:site_name" content="达达同学">
+<meta property="og:description" content="第一个例子Hello world在Angular中创建服务一般通过以下几种方式
+
+Factory
+Service
+Provider
+Constant
+Value
+
+
+其中前三种较为常见，来看一下他们的实现方式：
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950var">
+<meta property="og:image" content="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/$provide.png">
+<meta property="og:image" content="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/对比.png">
+<meta property="og:updated_time" content="2017-01-04T14:59:06.092Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS中几种服务的比较">
+<meta name="twitter:description" content="第一个例子Hello world在Angular中创建服务一般通过以下几种方式
+
+Factory
+Service
+Provider
+Constant
+Value
+
+
+其中前三种较为常见，来看一下他们的实现方式：
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950var">
+<meta name="twitter:image" content="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/$provide.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> AngularJS中几种服务的比较 | 达达同学 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">达达同学</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">dream big , start small</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                AngularJS中几种服务的比较
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-03T20:01:01+08:00" content="2017-01-03">
+              2017-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/03/AngularJS中几种服务的比较/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/03/AngularJS中几种服务的比较/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="第一个例子Hello-world"><a href="#第一个例子Hello-world" class="headerlink" title="第一个例子Hello world"></a>第一个例子Hello world</h2><p>在Angular中创建服务一般通过以下几种方式</p>
+<ul>
+<li>Factory</li>
+<li>Service</li>
+<li>Provider</li>
+<li>Constant</li>
+<li>Value</li>
+</ul>
+<img title="$provider生成服务" alt="$provider生成服务" src="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/$provide.png">
+<p>其中前三种较为常见，来看一下他们的实现方式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> myApp = angular.module(<span class="string">'myApp'</span>, []);</div><div class="line"></div><div class="line"><span class="comment">//service实现</span></div><div class="line">myApp.service(<span class="string">'helloWorldFromService'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.sayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Hello, World!"</span></div><div class="line">    &#125;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">//factory实现</span></div><div class="line">myApp.factory(<span class="string">'helloWorldFromFactory'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        <span class="attr">sayHello</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Hello, World!"</span></div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;);</div><div class="line">    </div><div class="line"><span class="comment">//provider实现</span></div><div class="line">myApp.provider(<span class="string">'helloWorld'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">//此种方式不能依赖任何其他的factory或者service</span></div><div class="line">  	<span class="comment">//其具体实现都要放在放在$get中，类似于服务的构造函数</span></div><div class="line"></div><div class="line">    <span class="keyword">var</span> _name = <span class="string">'Default'</span>;</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.$get = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">sayHello</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">                <span class="keyword">return</span> <span class="string">"Hello, "</span> + _name + <span class="string">"!"</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    <span class="comment">//定义在this上的方法仅能在config中访问，提供配置</span></div><div class="line">    <span class="keyword">this</span>.setName = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">        _name = name;</div><div class="line">    &#125;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">//这里可以对通过provider方式实现的服务进行配置            </span></div><div class="line">myApp.config(<span class="function"><span class="keyword">function</span>(<span class="params">helloWorldProvider</span>)</span>&#123;</div><div class="line">    helloWorldProvider.setName(<span class="string">'World'</span>);</div><div class="line">&#125;);</div><div class="line">        </div><div class="line"><span class="comment">//在控制器中注入以上服务</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, helloWorld, helloWorldFromFactory, helloWorldFromService</span>) </span>&#123;</div><div class="line">    $scope.hellos = [</div><div class="line">        helloWorld.sayHello(),</div><div class="line">        helloWorldFromFactory.sayHello(),</div><div class="line">        helloWorldFromService.sayHello()];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="对比分析"><a href="#对比分析" class="headerlink" title="对比分析"></a>对比分析</h2><p><strong>service方式:</strong>以类似构造函数的形式定义服务，用<code>new</code>关键字创建了一个服务实例。可以在这个构造函数内部用<code>this</code>定义属性和方法，angualr会隐式返回这个this实例.</p>
+<p><strong>factory方式:</strong>类似于设计模式中工厂模式。返回一个新建对象，这个对象的属性就是你所创建的服务可提供的api</p>
+<p><strong>provider方式:</strong>先于<code>.config</code>方法前执行，<strong>可以看作是可配置的factory方式。</strong>唯一可以对<code>config</code>方法进行注入的服务生成方式。<strong>控制器可以访问的其<code>$get()</code>函数里返回的属性和方法。</strong>需要注意，在向<code>.config</code>方法注入服务时，需要在服务名后加上”~Provider”。</p>
+<p>由此可见，在provider方式生成的服务实例可提供更多的扩展配置，在多个应用中可以通过此种方式使用同一个服务。在Angular内部，factory 和 service其实都是通过provider的方式来实现的。</p>
+<h2 id="value与constant"><a href="#value与constant" class="headerlink" title="value与constant"></a>value与constant</h2><p>除了以上三种方式之外，value和constant也是可以为controller提供注入的服务</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">myApp.value(<span class="string">'name'</span>,<span class="string">'xiaoMing'</span>)</div><div class="line"></div><div class="line">myApp.constant(<span class="string">'preString'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">preStr</span>)</span>&#123;</div><div class="line">  	<span class="keyword">return</span> preStr +  <span class="string">' '</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">//注入常量preString</span></div><div class="line">myApp.config(<span class="function"><span class="keyword">function</span>(<span class="params">helloWorldProvider,preString</span>)</span>&#123;</div><div class="line">	helloWorldProvider.setName(preString(<span class="string">'Angular'</span>)+<span class="string">'World'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, helloWorld</span>) </span>&#123;</div><div class="line">    $scope.hellos = helloWorld;	<span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这两者的主要区别是，<strong>常量constant可以注入到包括配置函数<code>.config()</code>在内的任何地方而且其值无法被改变，而value则不行。</strong></p>
+<h2 id="装饰器decorator"><a href="#装饰器decorator" class="headerlink" title="装饰器decorator"></a>装饰器decorator</h2><p>decorator的功能参照设计模式的装饰器模式，可以在不修改原有服务(<code>constant</code>服务不能被修饰)代码的基础上，扩展添加新的功能。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Mail = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.receiver = <span class="string">''</span>;</div><div class="line">    <span class="keyword">this</span>.body = <span class="string">''</span>;</div><div class="line">    <span class="keyword">this</span>.cc = [];</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Mail.prototype.setReceiver = <span class="function"><span class="keyword">function</span>(<span class="params">receiver</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.receiver = receiver;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Mail.prototype.setBody = <span class="function"><span class="keyword">function</span>(<span class="params">body</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.body = body;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//定义A模块及其服务Mail</span></div><div class="line">angular.module(<span class="string">'A'</span>, []).service(<span class="string">'Mail'</span>, Mail);</div><div class="line"></div><div class="line"><span class="comment">//对A模块进行扩展，在其服务上添加抄送(addCC)功能</span></div><div class="line">angular.module(<span class="string">'B'</span>, [<span class="string">'A'</span>]).config(<span class="function"><span class="keyword">function</span>(<span class="params">$provide</span>) </span>&#123;</div><div class="line">    $provide.decorator(<span class="string">'Mail'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$delegate</span>) </span>&#123;</div><div class="line">        $delegate.addCC = <span class="function"><span class="keyword">function</span>(<span class="params">cc</span>) </span>&#123;</div><div class="line">            <span class="keyword">this</span>.cc.push(cc);</div><div class="line">        &#125;;</div><div class="line">        <span class="keyword">return</span> $delegate;</div><div class="line">    &#125;);</div><div class="line">&#125;)</div><div class="line">.controller(<span class="string">'TestCtrl'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope, Mail</span>) </span>&#123;</div><div class="line">    Mail.addCC(<span class="string">'jack'</span>);</div><div class="line">    <span class="built_in">console</span>.log(Mail);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>不同于控制器实例会被频繁的销毁或创建，我们所创建的所有服务实例都是单例模式，所以服务经常被用于存储应用层级的数据或是提供与DOM无关的一些操作（如异步请求）。针对不同的服务需求选择不同的创建方式。文中如有错误，欢迎讨论。</p>
+ <img alt="不同服务生成方式对比.png" src="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/对比.png">
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AngularJS/" rel="tag">#AngularJS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/20/ECMAScript-6-入门/" rel="next" title="ECMAScript 6 入门">
+                <i class="fa fa-chevron-left"></i> ECMAScript 6 入门
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/03/AngularJS中几种服务的比较/"
+           data-title="AngularJS中几种服务的比较" data-url="http://yoursite.com/2017/01/03/AngularJS中几种服务的比较/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="meta-d" />
+          <p class="site-author-name" itemprop="name">meta-d</p>
+          <p class="site-description motion-element" itemprop="description">你柔弱着为什么不让自己发光</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一个例子Hello-world"><span class="nav-number">1.</span> <span class="nav-text">第一个例子Hello world</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比分析"><span class="nav-number">2.</span> <span class="nav-text">对比分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value与constant"><span class="nav-number">3.</span> <span class="nav-text">value与constant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器decorator"><span class="nav-number">4.</span> <span class="nav-text">装饰器decorator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">4.1.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meta-d</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"mengda"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
