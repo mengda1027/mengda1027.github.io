@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="达达同学" />
+
+
+
+<meta name="description" content="Angular 4 中的路由实践">
+<meta name="keywords" content="Angular">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular 4.x 中的路由">
+<meta property="og:url" content="https://mengda1027.github.io/2017/05/25/Angular 4.x 中的路由/index.html">
+<meta property="og:site_name" content="达达同学的个人站点">
+<meta property="og:description" content="Angular 4 中的路由实践">
+<meta property="og:image" content="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/主路由对象与根组件关系图.jpg">
+<meta property="og:updated_time" content="2017-05-26T12:08:03.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular 4.x 中的路由">
+<meta name="twitter:description" content="Angular 4 中的路由实践">
+<meta name="twitter:image" content="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/主路由对象与根组件关系图.jpg">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="达达同学的个人站点" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Angular 4.x 中的路由 | 达达同学的个人站点</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">达达同学</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">dream big , start small</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:mengda@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/mengda1027" title="GitHub"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Core-JavaScript/">Core JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lodash/">Lodash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">to be a geek not a nerd</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">达达同学</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">达达同学</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">dream big , start small</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:mengda@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/mengda1027" title="GitHub"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Angular 4.x 中的路由" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/25/Angular 4.x 中的路由/" class="article-date">
+      <time datetime="2017-05-25T06:45:15.000Z" itemprop="datePublished">2017-05-25</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Angular 4.x 中的路由
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Angular/">Angular</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="安装router与导入"><a href="#安装router与导入" class="headerlink" title="安装router与导入"></a>安装router与导入</h1><p>安装Angualr Router:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i --save @angular/router</div></pre></td></tr></table></figure>
+<p>要使用路由，我们需要在 主模块<code>AppModule</code> 中，导入 <code>RouterModule</code></p>
+<p>主模块中使用 <code>forRoot()</code>，子模块中使用 <code>forChild()</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="keyword">import</span> &#123; Routes, RouterModule &#125; <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> ROUTES: Routes = [</div><div class="line">  <span class="comment">// ...核心路由配置</span></div><div class="line">];</div><div class="line"></div><div class="line">@NgModule(&#123;</div><div class="line">  <span class="attr">imports</span>: [</div><div class="line">    BrowserModule,</div><div class="line">    RouterModule.forRoot(ROUTES)</div><div class="line">  ],</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;)</div><div class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppModule</span> </span>&#123;&#125;</div></pre></td></tr></table></figure>
+<h1 id="常用指令及常见路由配置项目"><a href="#常用指令及常见路由配置项目" class="headerlink" title="常用指令及常见路由配置项目"></a>常用指令及常见路由配置项目</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Routes</td>
+<td style="text-align:center">核心路由配置项，指明路由与组件之间的对应关系</td>
+</tr>
+<tr>
+<td style="text-align:center">RouterOutlet</td>
+<td style="text-align:center">路由视图“占位符”，有具名和不具名两种，在组件模板中表名路由显示的位置</td>
+</tr>
+<tr>
+<td style="text-align:center">Router</td>
+<td style="text-align:center">路由执行对象，在组件控制器中通过<code>navigate()</code>等具体方法执行路由</td>
+</tr>
+<tr>
+<td style="text-align:center">RouterLink</td>
+<td style="text-align:center">模板中声明路由配置的指令，一般放在a标签中</td>
+</tr>
+<tr>
+<td style="text-align:center">ActivatedRoute</td>
+<td style="text-align:center">当前激活的路由对象。可<strong>注入组件</strong>使组件控制器获取当前<strong>路由信息</strong>（如路由参数queryParams）</td>
+</tr>
+</tbody>
+</table>
+ <img title="主路由对象与根组件关系图" alt="主路由对象与根组件关系图" src="http://7xtrl1.com1.z0.glb.clouddn.com/static/images/主路由对象与根组件关系图.jpg">
+<h1 id="获取动态路由参数"><a href="#获取动态路由参数" class="headerlink" title="获取动态路由参数"></a>获取动态路由参数</h1><h2 id="查询参数传递"><a href="#查询参数传递" class="headerlink" title="查询参数传递"></a>查询参数传递</h2><p>参数形式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/product?id=xxx&amp;name=xxx</div></pre></td></tr></table></figure>
+<p>在组件模板中通过<code>queryParams</code>指向一个对象字面量来注明参数值</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> [<span class="attr">routerLink</span>]=<span class="string">"['./product']"</span> [<span class="attr">queryParams</span>]=<span class="string">"&#123;id:xxx,name:xxx&#125;"</span>&gt;</span>商品xxx<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p> 在对应的组件中通过<code>ActivatedRoute</code>获取参数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductComponent</span> <span class="title">implements</span> <span class="title">OnInit</span> </span>&#123;</div><div class="line">  private productId: number</div><div class="line">  private productName: string</div><div class="line">  <span class="keyword">constructor</span>(private routeInfo: ActivatedRoute) &#123; &#125;</div><div class="line">  ngOnInit() &#123;</div><div class="line">    <span class="keyword">this</span>.productId = <span class="keyword">this</span>.routeInfo.snapshot.queryParams[<span class="string">'id'</span>]</div><div class="line">    <span class="keyword">this</span>.productName = <span class="keyword">this</span>.routeInfo.snapshot.queryParams[<span class="string">'name'</span>]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="路由路径传递"><a href="#路由路径传递" class="headerlink" title="路由路径传递"></a>路由路径传递</h2><p>参数形式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/product:id =&gt;  /product/1</div></pre></td></tr></table></figure>
+<p>此时需要在路由配置中标注动态路由参数位置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> routes: Routes = [</div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">''</span>, <span class="attr">component</span>: HomeComponent&#125;,</div><div class="line">  <span class="comment">// 路由参数:id</span></div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">'product/:id'</span>, <span class="attr">component</span>: ProductComponent&#125;,</div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">'**'</span>, <span class="attr">component</span>: Code404pageComponent&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>在组件模板中通过<code>routerLink</code>注明参数值</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> [<span class="attr">routerLink</span>]=<span class="string">"['./product',1]"</span>&gt;</span>商品xxx<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">// or</div><div class="line"><span class="tag">&lt;<span class="name">a</span> [<span class="attr">routerLink</span>]=<span class="string">"['./product/1']"</span>&gt;</span>商品xxx<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在对应的组件中通过<code>ActivatedRoute</code>获取参数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductComponent</span> <span class="title">implements</span> <span class="title">OnInit</span> </span>&#123;</div><div class="line">  private productId: number</div><div class="line">  <span class="keyword">constructor</span>(private routeInfo: ActivatedRoute) &#123; &#125;</div><div class="line">  ngOnInit() &#123;</div><div class="line">    <span class="keyword">this</span>.productId = <span class="keyword">this</span>.routeInfo.snapshot.params[<span class="string">'id'</span>]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意：<strong>参数快照（snapshot）</strong>和<strong>参数订阅(describe)</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 参数订阅</span></div><div class="line"><span class="keyword">this</span>.routeInfo.params.subscribe(<span class="function">(<span class="params">params: Params</span>) =&gt;</span> <span class="keyword">this</span>.productId = params[<span class="string">'id'</span>])</div><div class="line"><span class="comment">// 参数快照 </span></div><div class="line"><span class="keyword">this</span>.productId = <span class="keyword">this</span>.routeInfo.snapshot.params[<span class="string">'id'</span>]</div></pre></td></tr></table></figure>
+<p>如果组件不会出现<strong>从一个实例路由到另一个实例</strong>的情况，则用快照即可;否则需要用参数订阅确保参数可以更新——自身路由到自身的情况下，组件的<code>ngOnInit()</code>只会执行一次</p>
+<h2 id="路由配置传递"><a href="#路由配置传递" class="headerlink" title="路由配置传递"></a>路由配置传递</h2><p>在路由配置时就指明传递参数的值</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  path:'/product',</div><div class="line">  component:ProductComponent,</div><div class="line">  data:[&#123;isProd:true&#125;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>获取时，同样是通过<code>ActivatedRoute</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductComponent</span> <span class="title">implements</span> <span class="title">OnInit</span> </span>&#123;</div><div class="line">  private isProduct: boolean</div><div class="line">  <span class="keyword">constructor</span>(private routeInfo: ActivatedRoute) &#123; &#125;</div><div class="line">  ngOnInit() &#123;</div><div class="line">    <span class="comment">// this.isProd = this.routeInfo.snapshot.data[0]['isProd']</span></div><div class="line">    <span class="keyword">this</span>.routeInfo.data.subscribe(<span class="function">(<span class="params">data: Data</span>)=&gt;</span>&#123;</div><div class="line">      <span class="keyword">this</span>.isProd = data[<span class="number">0</span>].isProd</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="路由重定向"><a href="#路由重定向" class="headerlink" title="路由重定向"></a>路由重定向</h1><p>配置方式：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">const routes: Routes = [</div><div class="line">  &#123;path: '',redirectTo:'/home', pathMatch:'full'&#125;,</div><div class="line">  &#123;path: 'home', component: HomeComponent&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>注意：</p>
+<ol>
+<li>这里不要丢失 <code>pathMatch:&#39;full&#39;</code> 。因为<code>pathMatch</code>的默认值是<code>prefix</code>，而<strong>空路径</strong>（empty-path）是任何路径的前缀，导致在访问/other时也会被重定向到<code>/home</code></li>
+<li>当重定向以/开头时，为绝对路径重定向（<em>absolute redirect</em>），如下是与相对路径重定向的区别</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">  &#123;</div><div class="line">    path: 'team/:id',</div><div class="line">    component: TeamComponent,</div><div class="line">    children: [</div><div class="line">      &#123;</div><div class="line">        path: 'org/:name',</div><div class="line">        redirectTo: '/org/:name'	// 绝对路径</div><div class="line">      &#125;,</div><div class="line">      &#123;</div><div class="line">        path: 'legacy/user/:name',</div><div class="line">        redirectTo: 'user/:name'</div><div class="line">      &#125;,</div><div class="line">      &#123;</div><div class="line">        path: 'user/:name',</div><div class="line">        component: UserComponent</div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    path: 'org/:name',</div><div class="line">    component: OrgComponent</div><div class="line">  &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<h1 id="子路由、守护路由和辅助路由"><a href="#子路由、守护路由和辅助路由" class="headerlink" title="子路由、守护路由和辅助路由"></a>子路由、守护路由和辅助路由</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> routes: Routes = [</div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">''</span>,<span class="attr">redirectTo</span>:<span class="string">'/home'</span>, <span class="attr">pathMatch</span>:<span class="string">'full'</span>&#125;,</div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">'home'</span>, <span class="attr">component</span>: HomeComponent&#125;,</div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">'product/:id'</span>, <span class="attr">component</span>: ProductComponent,</div><div class="line">    <span class="attr">children</span>:[	<span class="comment">//子路由</span></div><div class="line">      &#123;<span class="attr">path</span>: <span class="string">''</span>, <span class="attr">component</span>: ProductDescComponent&#125;,</div><div class="line">      &#123;<span class="attr">path</span>: <span class="string">'seller/:sellerId'</span>, <span class="attr">component</span>: SellerInfoComponent&#125;</div><div class="line">  ],</div><div class="line">    <span class="attr">canActivate</span>:[LoginGuard],	<span class="comment">// 检测是否登录根据结果是否进入路由，实现鉴权功能</span></div><div class="line">    canDeactivate:[UnsavedGuard],	<span class="comment">// 提示是否保存，根据结果是否退出路由</span></div><div class="line">    resolve: &#123;<span class="attr">product</span>:ProductResolve&#125;,	<span class="comment">// resolve路由,product在正确返回前不进入'product/:id'路由</span></div><div class="line">  &#125;</div><div class="line">]</div><div class="line"></div><div class="line">@NgModule(&#123;</div><div class="line">  <span class="attr">imports</span>: [RouterModule.forRoot(routes)],</div><div class="line">  <span class="attr">exports</span>: [RouterModule],</div><div class="line">  <span class="attr">providers</span>: [LoginGuard,UnsavedGuard,ProductResolve]</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="子路由-children"><a href="#子路由-children" class="headerlink" title="子路由-children"></a>子路由-children</h2><p>在<code>ProductComponent</code>组件配置中添加 <code>children</code>，便可在页面中呈现<strong>子路由</strong></p>
+<p>注意，通过子路由功能可以实现 <strong>component-less</strong> 路由。使用 <strong>component-less</strong> 路由允许我们将路由组合在一起，并让它们<strong>共享路由配置信息和 outlet</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> ROUTES: Routes = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">path</span>: <span class="string">'settings'</span>,</div><div class="line">    <span class="attr">children</span>: [</div><div class="line">      &#123; <span class="attr">path</span>: <span class="string">'profile'</span>, <span class="attr">component</span>: ProfileSettingsComponent &#125;,</div><div class="line">      &#123; <span class="attr">path</span>: <span class="string">'password'</span>, <span class="attr">component</span>: PasswordSettingsComponent &#125;</div><div class="line">    ]</div><div class="line">  &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<p>此时， <code>/settings/profile</code> 和 <code>/settings/password</code> 路由定义的内容，将显示在 <code>AppComponent</code> 组件（即根组件而不是之前的子组件）的 <code>router-outlet</code> 元素中 </p>
+<h2 id="守护路由-canActivate-canDeactivate-resolve"><a href="#守护路由-canActivate-canDeactivate-resolve" class="headerlink" title="守护路由-canActivate/canDeactivate/resolve"></a>守护路由-canActivate/canDeactivate/resolve</h2><ol>
+<li><p>canActivate 只有当满足一定条件才可<strong>进入目标路由</strong>（如检测当前用户是否登录）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginGuard</span> <span class="title">implements</span> <span class="title">CanActivate</span> </span>&#123;</div><div class="line">  canActivate() &#123;</div><div class="line">    <span class="keyword">let</span> loggedIn: boolean = <span class="built_in">Math</span>.random() &lt;<span class="number">0.5</span>;</div><div class="line">    <span class="keyword">if</span>(!loggedIn)&#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'未登录'</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> loggedIn;	<span class="comment">// 返回boolean值，为true时可进入目标路由</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>canDeactivate 只有当满足一定条件才可<strong>离开当前路由</strong>（如提示用户是否保存）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">UnsavedGuard</span> <span class="title">implements</span> <span class="title">CanDeactivate</span>&lt;<span class="title">ProductComponent</span>&gt; </span>&#123; </div><div class="line">  canDeactivate(component: ProductComponent)  &#123;</div><div class="line">    <span class="comment">// component为当前组件，此时可获取其内部状态</span></div><div class="line">    <span class="keyword">return</span> <span class="built_in">window</span>.confirm(<span class="string">'还未保存，离开么？'</span>); <span class="comment">// 返回boolean值，为true时可进入退出路由</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>resolve路由接口，在获取相关数据(如异步获取后台数据)之后进入路由，以下是<a href="https://angular.io/docs/ts/latest/api/router/index/Resolve-interface.html" target="_blank" rel="external">官方例子</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Backend</span> </span>&#123;</div><div class="line">  fetchTeam(id: string) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">'someTeam'</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">@Injectable()</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TeamResolver</span> <span class="title">implements</span> <span class="title">Resolve</span>&lt;<span class="title">Team</span>&gt; </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(private backend: Backend) &#123;&#125;</div><div class="line">  resolve(</div><div class="line">    route: ActivatedRouteSnapshot,</div><div class="line">    <span class="attr">state</span>: RouterStateSnapshot</div><div class="line">  ): Observable&lt;any&gt;|<span class="built_in">Promise</span>&lt;any&gt;|any &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.backend.fetchTeam(route.params.id);	<span class="comment">// 模拟后台获取数据</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">@NgModule(&#123;</div><div class="line">  <span class="attr">imports</span>: [</div><div class="line">    RouterModule.forRoot([</div><div class="line">      &#123;</div><div class="line">        <span class="attr">path</span>: <span class="string">'team/:id'</span>,</div><div class="line">        <span class="attr">component</span>: TeamCmp,</div><div class="line">        <span class="attr">resolve</span>: &#123;</div><div class="line">          <span class="attr">team</span>: TeamResolver</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    ])</div><div class="line">  ],</div><div class="line">  <span class="attr">providers</span>: [TeamResolver]</div><div class="line">&#125;)</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppModule</span> </span>&#123;&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="辅助路由"><a href="#辅助路由" class="headerlink" title="辅助路由"></a>辅助路由</h2><p>在一个组件模板中只能有一个<code>router-outlet</code>指令来标明<strong>主路由</strong>的显示位置(也称为primary unnamed outlet)，这种路由是匿名的outlet.但是可以有多个具名的outlet (named outlets),即辅助路由.每个具名outlet可以拥有自己<strong>独立的路由配置和组件</strong>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--辅助路由配置--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> [<span class="attr">routerLink</span>]=<span class="string">"[&#123;outlets:&#123;aux:'chat'&#125;&#125;]"</span>&gt;</span>开始辅助路由<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> [<span class="attr">routerLink</span>]=<span class="string">"[&#123;outlets:&#123;aux:null&#125;&#125;]"</span>&gt;</span>关闭辅助路由<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">router-outlet</span>&gt;</span><span class="tag">&lt;/<span class="name">router-outlet</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!--辅助路由插座--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">router-outlet</span> <span class="attr">name</span>=<span class="string">"aux"</span>&gt;</span><span class="tag">&lt;/<span class="name">router-outlet</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在路由配置时，需要注明挂载在哪个具名outlet上</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> routes: Routes = [</div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">''</span>,<span class="attr">redirectTo</span>:<span class="string">'/home'</span>, <span class="attr">pathMatch</span>:<span class="string">'full'</span>&#125;,</div><div class="line">  <span class="comment">// 辅助路由</span></div><div class="line">  &#123;<span class="attr">path</span>: <span class="string">'chat'</span>,<span class="attr">component</span>:ChatComponent,<span class="attr">outlet</span>:<span class="string">'aux'</span>&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>另外可以通过<code>primary</code>控制在进入辅助路由的同时，进入特定的主路由</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> [<span class="attr">routerLink</span>]=<span class="string">"[&#123;outlets:&#123;primary:'home',aux:'chat'&#125;&#125;]"</span>&gt;</span>开始辅助路由<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>更多信息可以参考<a href="https://angular.io/docs/ts/latest/guide/router.html#!#named-outlets" target="_blank" rel="external">named-outlets</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Angular的路由功能十分强大，配置灵活丰富，以上只是部分常见配置，仅是冰山一角，更多内容还需要参考<a href="https://angular.io/docs/ts/latest/guide/router.html" target="_blank" rel="external">官方文档</a>以及<a href="https://embed.plnkr.co/?show=preview" target="_blank" rel="external">在线Demo</a>。如有不详或错误之处，还请指出，共同学习进步。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://segmentfault.com/a/1190000009265310" target="_blank" rel="external">1. Angular 4.x 路由快速入门</a></p>
+<p><a href="https://angular.io/docs/ts/latest/guide/router.html" target="_blank" rel="external">2. Angular 4.x 官方文档</a></p>
+<p><a href="http://vsavkin.tumblr.com/post/146722301646/angular-router-empty-paths-componentless-routes" target="_blank" rel="external">3. ANGULAR ROUTER: EMPTY PATHS, COMPONENTLESS ROUTES, AND REDIRECTS</a></p>
+<p><a href="https://juejin.im/post/58d9c9bb2f301e007e8fa7c1" target="_blank" rel="external">4. Angular 2 ：初步了解路由及使用</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/05/25/Angular 4.x 中的路由/">Angular 4.x 中的路由</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">达达同学</a></p>
+        <p><span>发布时间:</span>2017-05-25, 14:45:15</p>
+        <p><span>最后更新:</span>2017-05-26, 20:08:03</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/25/Angular 4.x 中的路由/" title="Angular 4.x 中的路由">https://mengda1027.github.io/2017/05/25/Angular 4.x 中的路由/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mengda1027.github.io/2017/05/25/Angular 4.x 中的路由/　　作者: 达达同学" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/04/27/对象的扩展的几种方法/">
+                    对象的扩展的几种方法
+                </a>
+            </div>
+        
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装router与导入"><span class="toc-number">1.</span> <span class="toc-text">安装router与导入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用指令及常见路由配置项目"><span class="toc-number">2.</span> <span class="toc-text">常用指令及常见路由配置项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#获取动态路由参数"><span class="toc-number">3.</span> <span class="toc-text">获取动态路由参数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查询参数传递"><span class="toc-number">3.1.</span> <span class="toc-text">查询参数传递</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由路径传递"><span class="toc-number">3.2.</span> <span class="toc-text">路由路径传递</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由配置传递"><span class="toc-number">3.3.</span> <span class="toc-text">路由配置传递</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#路由重定向"><span class="toc-number">4.</span> <span class="toc-text">路由重定向</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#子路由、守护路由和辅助路由"><span class="toc-number">5.</span> <span class="toc-text">子路由、守护路由和辅助路由</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#子路由-children"><span class="toc-number">5.1.</span> <span class="toc-text">子路由-children</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#守护路由-canActivate-canDeactivate-resolve"><span class="toc-number">5.2.</span> <span class="toc-text">守护路由-canActivate/canDeactivate/resolve</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#辅助路由"><span class="toc-number">5.3.</span> <span class="toc-text">辅助路由</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Angular 4.x 中的路由　| 达达同学的个人站点　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'https://mengda1027.github.io/2017/05/25/Angular 4.x 中的路由/';
+            this.page.identifier = '2017/05/25/Angular 4.x 中的路由/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//mengda.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/04/27/对象的扩展的几种方法/" title="上一篇: 对象的扩展的几种方法">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/Angular 4.x 中的路由/">Angular 4.x 中的路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/27/对象的扩展的几种方法/">对象的扩展的几种方法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 达达同学
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 6;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
